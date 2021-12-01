@@ -1,0 +1,79 @@
+<aura:component controller="getObject">
+    <aura:attribute name="options" type="List" />
+   
+    <aura:attribute name="fields" type="List" />
+    <aura:attribute name="sltdvalue" type="String" />
+    <aura:attribute name="resultList" type="String" />
+   
+    <aura:attribute name="FieldList" type="List" />
+    <aura:attribute name="values" type="List" default="[]"/>
+   
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="displayField" type="List"/>
+    <aura:attribute name="allInitDetails" type="List"/>
+    <aura:attribute name="showRecord" type="Boolean" default = "false"/>
+    <aura:attribute name="query" type="String" />
+    <aura:attribute name="objName" type="String" />
+    <aura:attribute name="dataList" type="List"/>
+   
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />    
+   
+    <lightning:card>
+        <lightning:combobox name=" Select Object"
+                            label = "Select Object"
+                            value = "inProgress"
+                            placeholder="Select Object"
+                            options="{!v.options}"
+                            onchange="{!c.showField}"/>
+       
+        <lightning:dualListbox class="slds-m-around_xx-large"
+                               name="Fields"
+                               label= "Select Fields"
+                               fieldLevelHelp="Select your Fields"
+                               options="{!v.fields}"
+                               value="{!v.values}"
+                               onchange="{!c.showQuery}"/>
+        <br/>  
+    </lightning:card>
+    <div >
+        <div>
+            <lightning:textarea class="slds-m-around_xx-large" name="input1" value= "{!v.query}" label="Enter SOQL Query" readonly="True"/>
+        </div>
+        <lightning:button variant="success"
+                          label="Records"
+                          title="Brand action"
+                          onclick="{!c.fetchRecord}" />
+    </div>
+   <!--  
+    <div style="height: 300px">
+        <aura:if isTrue="{!v.showRecord}">
+        <lightning:datatable
+                keyField="id"
+                data="{!v.dataList}"
+                columns="{!v.values}"
+                hideCheckboxColumn="true"/>
+        </aura:if>
+    </div>
+   
+         -->
+    <lightning:card>
+        <aura:if isTrue="{!v.showRecord}">
+    <div class="slds-p-around_small">
+            <table>
+                    <tr>
+                    <aura:iteration items="{!v.values}" var="col">
+                         <th>{!col}</th>
+                         </aura:iteration>
+                      </tr>
+                        <aura:iteration items="{!v.dataList}" var="record">
+                            <tr>
+                                <aura:iteration items="{!record}" var="data">
+                                    <td>{!data}</td>
+                               </aura:iteration>
+                           </tr>
+                        </aura:iteration>
+            </table>
+        </div>
+            </aura:if>
+    </lightning:card>  
+</aura:component>
